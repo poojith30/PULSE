@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
+import { useLocalStorage } from '../hooks/useLocalStorage'
 
 /**
  * Layout Component
@@ -8,19 +9,37 @@ import Navbar from './Navbar'
  * Enforces generous whitespace, calm typography, and clean centering.
  */
 export default function Layout() {
+  const [settings] = useLocalStorage('pulse-settings', {})
+  const selectedTheme = ['light', 'dark', 'system'].includes(settings?.theme)
+    ? settings.theme
+    : 'system'
+  const [systemPrefersDark, setSystemPrefersDark] = useState(() => (
+    typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+  ))
+  const isDark = selectedTheme === 'dark' || (selectedTheme === 'system' && systemPrefersDark)
+  const activeTheme = isDark ? 'theme-dark' : 'theme-light'
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const updateSystemTheme = (event) => setSystemPrefersDark(event.matches)
+
+    setSystemPrefersDark(mediaQuery.matches)
+    mediaQuery.addEventListener('change', updateSystemTheme)
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light'
+
+    return () => mediaQuery.removeEventListener('change', updateSystemTheme)
+  }, [isDark])
+
   return (
-    <div className="flex min-h-screen flex-col bg-zinc-50 text-zinc-900">
-      {/* Sticky Top Navigation */}
+    <div className={`app-shell ${activeTheme}`}>
       <Navbar />
 
-      {/* Main Page Content */}
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
+      <main className="page-container">
         <Outlet />
       </main>
 
-      {/* Minimal Footer */}
-      <footer className="border-t border-zinc-200/60 py-6 text-center text-xs text-zinc-400">
-        <p>PULSE — Student Decision & Action Assistant</p>
+      <footer className="site-footer">
+        <p>PULSE <span>·</span> Student decision assistant</p>
       </footer>
     </div>
   )

@@ -14,14 +14,11 @@ export default function Navbar() {
   ]
 
   return (
-    <header className="sticky top-0 z-30 w-full border-b border-zinc-200/80 bg-zinc-50/90 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4 sm:px-6">
-        {/* Brand Logo & Name */}
-        <NavLink to="/" className="flex items-center gap-2 group">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-zinc-900 text-white shadow-xs transition-transform group-hover:scale-105">
-            {/* Minimal Pulse Wave Icon */}
+    <header className="topbar">
+      <div className="topbar-inner">
+        <NavLink to="/" className="brand" aria-label="PULSE home">
+          <div className="brand-mark" aria-hidden="true">
             <svg
-              className="h-3.5 w-3.5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -29,28 +26,19 @@ export default function Navbar() {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              <polyline points="2 12 6 12 9 4 15 20 18 12 22 12" />
             </svg>
           </div>
-          <span className="text-sm font-semibold tracking-wider text-zinc-900 uppercase">
-            Pulse
-          </span>
+          <span className="brand-name">PULSE</span>
         </NavLink>
 
-        {/* Navigation Links */}
-        <nav className="flex items-center gap-1 sm:gap-2">
+        <nav className="main-nav" aria-label="Main navigation">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               end={item.path === '/'}
-              className={({ isActive }) =>
-                `rounded-md px-3 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'bg-zinc-200/70 text-zinc-900'
-                    : 'text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800'
-                }`
-              }
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
               {item.label}
             </NavLink>

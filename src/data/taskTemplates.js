@@ -1,12 +1,31 @@
-/**
- * taskTemplates.js
- * Predefined student task templates (e.g., assignment prep, exam revision).
- * 
- * Each future template will provide:
- * - id: unique identifier (string)
- * - title: template name (string)
- * - estimatedMinutes: estimated duration (number)
- * - defaultSteps: recommended subtask breakdown (array of strings)
- */
-
-export const taskTemplates = []
+export const taskTemplates = {
+	assignment: [
+		'Understand requirements',
+		'Research',
+		'Complete work',
+		'Review',
+		'Submit',
+	],
+	project: [
+		'Define requirements',
+		'Plan',
+		'Build',
+		'Test',
+		'Document',
+		'Submit',
+	],
+	exam: [
+		'Review syllabus',
+		'Identify weak topics',
+		'Study',
+		'Practice',
+		'Review mistakes',
+	],
+	presentation: [
+		'Research',
+		'Create outline',
+		'Create slides',
+		'Practice',
+		'Final review',
+	],
+}
